@@ -115,21 +115,32 @@ app.get("/register", function (req, res) {
 })
 
 app.get("/secrets", function (req, res) {
-    if (req.isAuthenticated()) {
-        res.render("secrets");
-    }
-    else {
-        res.redirect("/login");
-    }
+
+    // No need to authenticate as secrets are shared anonymously
+    // if (req.isAuthenticated()) {
+    //     res.render("secrets");
+    // }
+    // else {
+    //     res.redirect("/login");
+    // }
+
+    User.find({ "secret": { $ne: null } }).then(function (foundUser) {
+        if (foundUser) {
+            res.render("secrets", { usersWithSecrets: foundUser });
+        }
+    })
+
 })
 
 app.get("/submit", function (req, res) {
+
     if (req.isAuthenticated()) {
         res.render("submit");
     }
     else {
         res.redirect("/login");
     }
+
 })
 
 app.post("/submit", function (req, res) {
