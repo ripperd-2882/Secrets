@@ -29,6 +29,16 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+//using passport
+app.use(session({
+    secret: "Our little secret.",
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 mongoose.connect("mongodb://127.0.0.1:27017/userDB");
 
 const userSchema = new mongoose.Schema({
